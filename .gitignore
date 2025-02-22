@@ -1,0 +1,4 @@
+obj/
+out/
+quickjs/.obj/
+libquickjs.a
