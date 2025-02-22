@@ -1,0 +1,94 @@
+#
+# All important directories and files address
+#
+QUICKJS_DIR="quickjs"
+QUICKJS_OBJ_DIR="quickjs/.obj"
+QUICKJS_DIM_OBJ_DIR="obj"
+QUICKJS_OBJ_LIB_LIST="obj/quickjs.o" \
+	"obj/quickjs-libc.o" \
+	"obj/cutils.o" \
+	"obj/libbf.o" \
+	"obj/libregexp.o" \
+	"obj/libunicode.o" \
+	"obj/qjs.check.o" \
+	"obj/qjs.o" \
+	"obj/qjsc.o" \
+	"obj/quickjs.check.o"
+QUICKJS_LIB_NAME="libquickjs.a"
+DIM_ENTERY="src/dim.c"
+DIM_OUTPUT_DIR="out"
+DIM_OUTPUT="out/dim"
+DIM_SAMPLE_FILE="sample/main.js"
+
+#
+# MakeFile Configs
+#
+COMPILER=gcc
+
+#
+# Specify the operating system type
+#
+ifeq ($(OS), Windows_NT)
+	COPY_COM=xcopy
+	COPY_COM_FLAGS=/s /e /h
+else
+	UNAME_S := $(shell uname -s)
+
+	ifeq ($(UNAME_S),Linux)
+		COPY_COM=cp -R
+		COPY_COM_FLAGS=""
+	endif
+
+	ifeq ($(UNAME_S),Darwin)
+		COPY_COM=cp -R
+		COPY_COM_FLAGS=""
+	endif
+endif
+
+#
+# The main command for MakeFile
+#
+main: build execute_sample
+
+#
+# The initialize
+#
+init: init_dir fetch_qjs build_qjs_lib build
+
+#
+# Compiling the QuickJS library
+#
+compile_qjs:
+	mkdir $(QUICKJS_OBJ_DIR)
+	(cd $(QUICKJS_DIR) $() && make)
+
+#
+# The initializer for directories
+#
+init_dir:
+	mkdir $(DIM_OUTPUT_DIR)
+	mkdir $(QUICKJS_DIM_OBJ_DIR)
+
+#
+# Copying the QuickJS library for Dim
+#
+fetch_qjs:
+	$(COPY_COM) $(QUICKJS_OBJ_DIR) $(QUICKJS_DIM_OBJ_DIR) $(COPY_COM_FLAGS)
+
+#
+# Creating an archive of the QuickJS library
+#
+build_qjs_lib:
+	ar rcs $(QUICKJS_LIB_NAME) $(QUICKJS_OBJ_LIB_LIST)
+
+#
+# Build the Dim
+#
+build:
+	$(COMPILER) $(DIM_ENTERY) $(QUICKJS_LIB_NAME) -o $(DIM_OUTPUT)
+
+#
+# Execute the sample file
+#
+execute_sample:
+	$(DIM_OUTPUT) $(DIM_SAMPLE_FILE)
