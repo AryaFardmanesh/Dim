@@ -1,9 +1,10 @@
 #ifndef DIM_H
 #define DIM_H
 
-#include ".././quickjs/quickjs.h"
+#include "../quickjs/quickjs.h"
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -21,12 +22,8 @@ void dim_free();
 
 void handleError();
 
-void dim_append_fn(JSCFunction* func, const char* name);
-void dim_load_fn();
-
 void dim_exe();
 
-#include "fn/fn.h"
-#include "fn/module.c"
+#include "module/module.h"
 
 #endif

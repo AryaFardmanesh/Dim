@@ -1,6 +1,10 @@
-include('stdio');
+include( 'stdio' );
+include( 'string' );
 
-print("Hello world!\n");
+echo( 'Hello world!\n' );
+echo( 'Hello world!\n' );
+echo( 'Hello world!\n\n' );
 
-const name = input("Enter your name: ");
-print(`Your name is ${ name }.`);
+echo( strlen( 'Hellox' ) + '\n' );
+
+echo( strcpy( 'Hello\n' ) );

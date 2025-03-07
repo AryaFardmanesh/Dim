@@ -6,16 +6,15 @@ void dim_init(char* program) {
 	status = true;
 	script = program;
 
-	dim_modules_init();
-	dim_load_fn();
+	dim_module_init();
 }
 
 void dim_free() {
 	JS_FreeValue(context, executeResult);
 	JS_FreeContext(context);
 	JS_FreeRuntime(runtime);
-	dim_modules_free();
 	free(script);
+	dim_module_free();
 }
 
 void handleError() {
